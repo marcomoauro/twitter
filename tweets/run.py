@@ -9,7 +9,7 @@ def data():
     account_twitter = 7
 
     with open(settings.COMPANIES_FILE_PATH) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter='\t')
+        csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader)  # skip header row
         for row in csv_reader:
             if row[ticker] not in tickers:
