@@ -1,3 +1,3 @@
-BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAOhdIQEAAAAAyj572%2FttzD8wEfskzl%2FjEabM1K8%3DEdjUHFfqPRlsJPblxopAOdsDLcBZGfcteZ70kuMG9YxNTbhW8H'
-TWEETS_DATA_FOLDER = '/home/marco/Scrivania/tirocinio-unicredit/tweets-data/'
-COMPANIES_FILE_PATH = '/home/marco/Scrivania/tirocinio-unicredit/compagnie.csv'
+BEARER_TOKEN = 'twitter_bearer_tken'
+TWEETS_DATA_FOLDER = 'folder-where-save-tweets-data'
+COMPANIES_FILE_PATH = 'folder-from-which-read-companies-data'
