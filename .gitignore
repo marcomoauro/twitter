@@ -93,3 +93,4 @@ db.sqlite3
 .idea
 .vscode
 logs/
+settings.py
