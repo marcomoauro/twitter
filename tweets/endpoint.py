@@ -52,4 +52,3 @@ def response(query, next_token=None):
 
 if LOG_HTTP_CALL:
     log_http_call()
-
