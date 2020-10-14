@@ -2,9 +2,9 @@ import logging
 import requests
 from time import sleep
 import datetime
+import settings
 
 LOG_HTTP_CALL = False
-BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAOhdIQEAAAAAyj572%2FttzD8wEfskzl%2FjEabM1K8%3DEdjUHFfqPRlsJPblxopAOdsDLcBZGfcteZ70kuMG9YxNTbhW8H'
 
 
 def log_http_call():
@@ -29,9 +29,7 @@ def url(query, next_token):
     query += options
     max_results_string = 'max_results=100'
     start_time_string = 'start_time=2020-10-07T00:00:00Z'
-    url = "https://api.twitter.com/2/tweets/search/recent?query={}&{}&{}".format(
-        query, expansions, max_results_string#, start_time_string
-    )
+    url = f"https://api.twitter.com/2/tweets/search/recent?query={query}&{expansions}&{max_results_string}"  # &{start_time_string}
     if next_token:
         url += f"&next_token={next_token}"
     return url
@@ -39,7 +37,7 @@ def url(query, next_token):
 
 def response(query, next_token=None):
     api_url = url(query, next_token)
-    headers = {"Authorization": "Bearer {}".format(BEARER_TOKEN)}
+    headers = {"Authorization": f"Bearer {settings.BEARER_TOKEN}"}
     response = requests.get(api_url, headers=headers)
     if response.status_code == 429:
         reset_time = datetime.datetime.fromtimestamp(int(response.headers['x-rate-limit-reset'])) + datetime.timedelta(0, 30)
