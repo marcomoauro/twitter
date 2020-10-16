@@ -19,6 +19,7 @@ def data():
         return tickers, accounts
 
 
-tickers, accounts = data()
-storer.store(tickers, 'hashtag')
-storer.store(accounts, 'account')
+if __name__ == '__main__':
+    tickers, accounts = data()
+    storer.store(tickers, 'hashtag')
+    storer.store(accounts, 'account')

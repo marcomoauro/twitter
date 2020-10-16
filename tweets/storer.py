@@ -28,7 +28,8 @@ def store(informations, kind):
 
 
 def is_incompleted_response(json_response):
-    return not(not(json_response['meta'].get('next_token')))
+    token = json_response.get('meta') and json_response['meta'].get('next_token')
+    return not(not(token))
 
 
 def fill_response(json_response, query, information):
