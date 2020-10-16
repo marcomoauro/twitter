@@ -1,3 +1,4 @@
 BEARER_TOKEN = 'twitter_bearer_token'
 TWEETS_DATA_FOLDER = 'folder-where-save-tweets-data'
 COMPANIES_FILE_PATH = 'folder-from-which-read-companies-data'
+TIMESTAMP_FILE = 'file-who-contain-oldest-timestamp-of-tweets'

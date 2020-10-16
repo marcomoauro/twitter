@@ -28,11 +28,15 @@ def url(query, next_token):
     options = " -is:retweet lang:it"
     query += options
     max_results_string = 'max_results=100'
-    start_time_string = 'start_time=2020-10-07T00:00:00Z'
-    url = f"https://api.twitter.com/2/tweets/search/recent?query={query}&{expansions}&{max_results_string}"  # &{start_time_string}
+    start_time_string = f"start_time={oldest_timestamp()}"
+    url = f"https://api.twitter.com/2/tweets/search/recent?query={query}&{expansions}&{max_results_string}&{start_time_string}"
     if next_token:
         url += f"&next_token={next_token}"
     return url
+
+def oldest_timestamp():
+    f = open(settings.TIMESTAMP_FILE, 'r')
+    return f.read().strip()
 
 
 def response(query, next_token=None):
@@ -40,7 +44,7 @@ def response(query, next_token=None):
     headers = {"Authorization": f"Bearer {settings.BEARER_TOKEN}"}
     response = requests.get(api_url, headers=headers)
     if response.status_code == 429:
-        reset_time = datetime.datetime.fromtimestamp(int(response.headers['x-rate-limit-reset'])) + datetime.timedelta(0, 30)
+        reset_time = datetime.datetime.fromtimestamp(int(response.headers['x-rate-limit-reset'])) + datetime.timedelta(seconds=30)
         print(f"sleep until {reset_time}")
         sleep((reset_time - datetime.datetime.now()).seconds)
         return {'error': 'rate limit'}

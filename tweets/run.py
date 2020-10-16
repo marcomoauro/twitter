@@ -1,6 +1,8 @@
 import csv
 import tweets.storer as storer
 import settings
+import datetime
+
 
 def data():
     tickers = []
@@ -19,7 +21,12 @@ def data():
         return tickers, accounts
 
 
+def save_timestamp():
+    with open(settings.TIMESTAMP_FILE, 'w') as file:
+        file.write(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))
+
 if __name__ == '__main__':
     tickers, accounts = data()
     storer.store(tickers, 'hashtag')
     storer.store(accounts, 'account')
+    save_timestamp()

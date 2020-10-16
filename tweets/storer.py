@@ -1,6 +1,7 @@
 import tweets.endpoint as endpoint
 import json
 import os
+import datetime
 from datetime import date
 import settings
 
@@ -54,7 +55,7 @@ def twitter_query(information, kind):
 
 
 def save_response(json_response, information, kind):
-    today = date.today()
+    today = date.today()# + datetime.timedelta(days=1)
     directory_path = settings.TWEETS_DATA_FOLDER + f"{kind}/{today}/"
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
