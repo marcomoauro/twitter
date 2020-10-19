@@ -8,6 +8,5 @@ def filter_for_reply(response):
     response['data'] = filtered_data
 
 
-
 def is_reply(tweet):
     return tweet['text'][0] == '@'
