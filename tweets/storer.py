@@ -1,9 +1,10 @@
 import tweets.endpoint as endpoint
+import tweets.filter as filter
 import json
 import os
-import datetime
 from datetime import date
 import settings
+
 
 def store(informations, kind):
     print(f"===== {kind.upper()} =====")
@@ -24,6 +25,7 @@ def store(informations, kind):
             print(f"skip {information} because 0 tweet")
             continue
 
+        filter.filter_for_reply(json_response)
         save_response(json_response, information, kind)
         print(f"wrote {result_count} tweets of {information}")
 
@@ -47,7 +49,7 @@ def fill_response(json_response, query, information):
 
 
 def twitter_query(information, kind):
-    if kind == 'hashtag':
+    if kind == 'hashtag' or kind == 'index':
         q = f"%23{information}"
     else:
         q = f"from: {information}"
