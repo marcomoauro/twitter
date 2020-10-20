@@ -4,21 +4,28 @@ import json
 import numpy as np
 import settings
 
+WIDTHS = {
+    'account': 20,
+    'hashtag': 50
+}
+
 
 def tweets(kind, date):
-    informations = []
-    tweets = []
+    tuples = []
     directory = f"{settings.TWEETS_DATA_FOLDER}{kind}/{date}"
     for filename in os.listdir(directory):
         file = open(directory + '/' + filename)
         parsed_file = json.load(file)
-        informations.append(filename.split('.')[0])
-        tweets.append(parsed_file['meta']['result_count'])
+        tuples.append((filename.split('.')[0].lower(), filename.split('.')[0], parsed_file['meta']['result_count']))
+
+    sorted_tuples = sorted(tuples)
+    informations = list(map((lambda tuple: tuple[1]), sorted_tuples))
+    tweets = list(map((lambda tuple: tuple[2]), sorted_tuples))
 
     x = np.arange(len(tweets))  # the label locations
     width = 0.35  # the width of the bars
 
-    fig = plt.figure(figsize=(20, 7))
+    fig = plt.figure(figsize=(WIDTHS.get(kind, 20), 7))
     ax = fig.add_subplot(111)
     rects1 = ax.bar(x, tweets, width)
 
