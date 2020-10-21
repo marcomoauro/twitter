@@ -20,14 +20,13 @@ def store(informations, kind):
         if json_response.get('error') == 'general error':
             continue
 
-        result_count = json_response['meta']['result_count']
-        if result_count == 0:
+        if json_response['meta']['result_count'] == 0:
             print(f"skip {information} because 0 tweet")
             continue
 
         filter.filter_for_reply(json_response)
         save_response(json_response, information, kind)
-        print(f"wrote {result_count} tweets of {information}")
+        print(f"wrote {json_response['meta']['result_count']} tweets of {information}")
 
 
 def is_incompleted_response(json_response):
@@ -42,7 +41,6 @@ def fill_response(json_response, query, information):
         print(f"find more {next_response['meta']['result_count']} tweet of {information}")
         json_response['data'] += next_response['data']
         json_response['includes']['users'] += next_response['includes']['users']
-        json_response['meta']['result_count'] += next_response['meta']['result_count']
         json_response['meta']['oldest_id'] = next_response['meta']['oldest_id']
         next_token = next_response['meta'].get('next_token')
     return json_response
