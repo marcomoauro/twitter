@@ -20,11 +20,12 @@ def store(informations, kind):
         if json_response.get('error') == 'general error':
             continue
 
+        filter.filter(json_response)
+
         if json_response['meta']['result_count'] == 0:
             print(f"skip {information} because 0 tweet")
             continue
 
-        filter.filter_for_reply(json_response)
         save_response(json_response, information, kind)
         print(f"wrote {json_response['meta']['result_count']} tweets of {information}")
 
@@ -55,7 +56,7 @@ def twitter_query(information, kind):
 
 
 def save_response(json_response, information, kind):
-    today = date.today()# + datetime.timedelta(days=1)
+    today = date.today()
     directory_path = settings.TWEETS_DATA_FOLDER + f"{kind}/{today}/"
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
