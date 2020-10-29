@@ -24,8 +24,8 @@ def log_http_call():
 
 
 def url(query, next_token):
-    expansions = 'tweet.fields=created_at,public_metrics&expansions=author_id&user.fields=created_at'
-    options = " -is:retweet lang:it"
+    expansions = 'tweet.fields=created_at,public_metrics,lang&expansions=author_id&user.fields=created_at'
+    options = " -is:retweet"
     query += options
     max_results_string = 'max_results=100'
     start_time_string = f"start_time={oldest_timestamp()}"

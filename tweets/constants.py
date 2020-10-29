@@ -6,7 +6,7 @@ FINANCE_KEYWORDS = [
     'fabbisogno', 'finanza', 'fiscalità', 'monetaria', 'flottante', 'frazionamento', 'azionario',
     'funzione', 'monetaria', 'fusione', 'gamma', 'globalizzazione',
     'greche', 'gettito', 'guadagno', 'inerzia', 'fiscale', 'inflazione', 'isocosto', 'isoquanto', 'kaizen',
-    'kanban', 'kaufsystem', 'keiretsu', 'know', 'how', 'lavoro', 'leva', 'finanziaria', 'operativa', 'liberismo',
+    'kanban', 'kaufsystem', 'keiretsu', 'lavoro', 'leva', 'finanziaria', 'operativa', 'liberismo',
     'liquidità', 'logistica', 'macroeconomia', 'market', 'microeconomia', 'minusvalenza', 'mission',
     'moneta', 'negoziazione', 'nazionalizzazione', 'oligopolio', 'operations', 'pensione', 'pluslavoro',
     'plusvalore', 'plusvalenza', 'politica monetaria', 'prezzo', 'privatizzazione', 'profitto',

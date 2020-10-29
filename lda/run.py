@@ -2,7 +2,7 @@ import json
 import pandas as pd
 import emoji
 import re
-
+import stopwords.stopwords as s
 import pyLDAvis.gensim
 import spacy
 from spacy.tokenizer import Tokenizer
@@ -19,10 +19,10 @@ import os
 stopwords = set(STOPWORDS)
 
 data = []
-for dir in os.listdir('/home/marco/Scrivania/tirocinio-unicredit/tweets-data/hashtag/'):
-    dir = '2020-10-21'
-    for filename in os.listdir(f"/home/marco/Scrivania/tirocinio-unicredit/tweets-data/hashtag/{dir}/"):
-        file = open(f"/home/marco/Scrivania/tirocinio-unicredit/tweets-data/hashtag/{dir}/" + filename)
+for dir in os.listdir('/home/marco/Scrivania/tirocinio-unicredit/tweets-data/hashtag_company/'):
+    dir = '2020-10-29'
+    for filename in os.listdir(f"/home/marco/Scrivania/tirocinio-unicredit/tweets-data/hashtag_company/{dir}/"):
+        file = open(f"/home/marco/Scrivania/tirocinio-unicredit/tweets-data/hashtag_company/{dir}/" + filename)
         parsed_file = json.load(file)
         data += parsed_file['data']
 
@@ -54,11 +54,9 @@ print()
 
 nlp = spacy.load('it')
 tokenizer = Tokenizer(nlp.vocab)
-# Custom stopwords
-custom_stopwords = ['hi', '\n', '\n\n', '&amp;', ' ', '.', '-', 'got', "it's", 'it’s', "i'm", 'i’m', 'im', 'want', 'like', '$', '@']
 
 # Customize stop words by adding to the default list
-STOP_WORDS = nlp.Defaults.stop_words.union(custom_stopwords)
+STOP_WORDS = nlp.Defaults.stop_words.union(s.ALL_STOPWORDS)
 
 # ALL_STOP_WORDS = spacy + gensim + wordcloud
 ALL_STOP_WORDS = STOP_WORDS.union(SW).union(stopwords)
@@ -138,7 +136,7 @@ print(len(id2word))
 corpus = [id2word.doc2bow(d) for d in df['lemma_tokens']]
 
 # Instantiating a Base LDA model
-base_model = LdaMulticore(corpus=corpus, num_topics=5, id2word=id2word, workers=12, passes=5)
+base_model = LdaMulticore(corpus=corpus, num_topics=15, id2word=id2word, workers=12, passes=5)
 
 # Filtering for words
 words = [re.findall(r'"([^"]*)"',t[1]) for t in base_model.print_topics()]
