@@ -26,6 +26,7 @@ def store(informations, kind):
             print(f"skip {information} because 0 tweet")
             continue
 
+        unique_author(json_response)
         save_response(json_response, information, kind)
         print(f"wrote {json_response['meta']['result_count']} tweets of {information}")
 
@@ -64,3 +65,13 @@ def save_response(json_response, information, kind):
         os.makedirs(directory_path)
     with open(settings.TWEETS_DATA_FOLDER + f"{kind}/{today}/{information}.json", 'w') as outfile:
         json.dump(json_response, outfile)
+
+
+def unique_author(json_response):
+    ids = set(map(lambda d: d['author_id'], json_response['data']))
+    authors = []
+    for user in json_response['includes']['users']:
+        if user['id'] in ids:
+            ids.remove(user['id'])
+            authors.append(user)
+    json_response['includes']['users'] = authors

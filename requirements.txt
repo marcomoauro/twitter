@@ -6,12 +6,11 @@ certifi==2020.6.20
 chardet==3.0.4
 cycler==0.10.0
 cymem==2.0.3
-de-core-news-sm==2.3.0
+de-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-2.3.0/de_core_news_sm-2.3.0.tar.gz
 decorator==4.4.2
 emoji==0.6.0
-en-core-web-lg==2.3.1
-en-core-web-sm==2.3.1
-fr-core-news-sm==2.3.0
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.1/en_core_web_sm-2.3.1.tar.gz
+fr-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-2.3.0/fr_core_news_sm-2.3.0.tar.gz
 funcy==1.15
 future==0.18.2
 gensim==3.8.3
@@ -20,7 +19,7 @@ importlib-metadata==2.0.0
 iniconfig==1.1.1
 ipython==7.18.1
 ipython-genutils==0.2.0
-it-core-news-sm==2.3.0
+it-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-2.3.0/it_core_news_sm-2.3.0.tar.gz
 jedi==0.17.2
 Jinja2==2.11.2
 joblib==0.17.0
