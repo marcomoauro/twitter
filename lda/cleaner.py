@@ -1,6 +1,6 @@
 import emoji
 import re
-
+import numpy as np
 
 def clean_emoji(text):
     emoji_list = [c for c in text if c in emoji.UNICODE_EMOJI]
@@ -27,10 +27,10 @@ def clean(df):
     df['url_free_tweets'] = df['emoji_free_tweets'].apply(clean_url)
 
 
-def remove_stopwords(df, tokenizer, ALL_STOP_WORDS):
+def remove_stopwords(df, tokenizers, ALL_STOP_WORDS):
     tokens = []
-
-    for doc in tokenizer.pipe(df['url_free_tweets'], batch_size=500):
+    for index, row in df.iterrows():
+        doc = tokenizers.get(row['lang'], tokenizers['en'])(row['url_free_tweets'])
         doc_tokens = []
         for token in doc:
             if token.text.lower() not in ALL_STOP_WORDS:
@@ -44,10 +44,10 @@ def remove_stopwords(df, tokenizer, ALL_STOP_WORDS):
     df['tokens_back_to_text'] = [' '.join(map(str, l)) for l in df['tokens']]
 
 
-def get_lemmas(text, nlp):
+def get_lemmas(text, lang, nlps):
     lemmas = []
 
-    doc = nlp(text)
+    doc = nlps.get(lang, nlps['en'])(text)
 
     # Something goes here :P
     for token in doc:
@@ -57,6 +57,6 @@ def get_lemmas(text, nlp):
     return lemmas
 
 
-def lemmas(df, nlp):
-    df['lemmas'] = df['tokens_back_to_text'].apply(get_lemmas, nlp=nlp)
+def lemmas(df, nlps):
+    df['lemmas'] = df.apply(lambda row: get_lemmas(row['tokens_back_to_text'], row['lang'], nlps), axis=1)
     df['lemmas_back_to_text'] = [' '.join(map(str, l)) for l in df['lemmas']]

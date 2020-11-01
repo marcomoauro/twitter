@@ -21,21 +21,37 @@ data = loader.load_data()
 df = pd.DataFrame(data)
 cleaner.clean(df)
 
-nlp = spacy.load('it')
-tokenizer = Tokenizer(nlp.vocab)
+nlps = {
+    'it': spacy.load('it'),
+    'en': spacy.load('en'),
+    'fr': spacy.load('fr'),
+    'de': spacy.load('de')
+}
+
+tokenizers = {
+    'it': Tokenizer(nlps['it'].vocab),
+    'en': Tokenizer(nlps['en'].vocab),
+    'fr': Tokenizer(nlps['fr'].vocab),
+    'de': Tokenizer(nlps['de'].vocab)
+
+}
 
 # Customize stop words by adding to the default list
-STOP_WORDS = nlp.Defaults.stop_words.union(s.ALL_STOPWORDS)
+stop_words = []
+stop_words += nlps['it'].Defaults.stop_words
+stop_words += nlps['en'].Defaults.stop_words
+stop_words += nlps['fr'].Defaults.stop_words
+stop_words += nlps['de'].Defaults.stop_words
+stop_words += s.ALL_STOPWORDS
+stop_words = set(stop_words)
 
 # ALL_STOP_WORDS = spacy + gensim + wordcloud
-ALL_STOP_WORDS = STOP_WORDS.union(SW).union(stopwords)
+ALL_STOP_WORDS = stop_words.union(SW).union(stopwords)
 
-cleaner.remove_stopwords(df, tokenizer, ALL_STOP_WORDS)
-cleaner.lemmas(df, nlp)
+cleaner.remove_stopwords(df, tokenizers, ALL_STOP_WORDS)
+cleaner.lemmas(df, nlps)
 
 t.tokenize_text(df)
-
-print()
 
 # Create a id2word dictionary
 id2word = Dictionary(df['lemma_tokens'])
@@ -49,7 +65,7 @@ print(len(id2word))
 corpus = [id2word.doc2bow(d) for d in df['lemma_tokens']]
 
 # Instantiating a Base LDA model
-base_model = LdaMulticore(corpus=corpus, num_topics=10, id2word=id2word, workers=12, passes=5)
+base_model = LdaMulticore(corpus=corpus, num_topics=8, id2word=id2word, workers=12, passes=5)
 
 # Filtering for words
 words = [re.findall(r'"([^"]*)"', t[1]) for t in base_model.print_topics()]
@@ -63,17 +79,14 @@ for id, t in enumerate(topics):
     print(f"------ Topic {id} ------")
     print(t, end="\n\n")
 
-print()
-
 # Compute Perplexity
 # a measure of how good the model is. lower the better
 base_perplexity = base_model.log_perplexity(corpus)
 print('\nPerplexity: ', base_perplexity)
 
-
 # Compute Coherence Score
 coherence_model = CoherenceModel(model=base_model, texts=df['lemma_tokens'],
-                                   dictionary=id2word, coherence='c_v')
+                                 dictionary=id2word, coherence='c_v')
 coherence_lda_model_base = coherence_model.get_coherence()
 print('\nCoherence Score: ', coherence_lda_model_base)
 print()
