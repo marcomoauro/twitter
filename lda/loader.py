@@ -3,6 +3,7 @@ import json
 
 TWEET_KINDS = ['hashtag_company', 'account']
 
+
 def load_data():
     data = []
     for kind in TWEET_KINDS:

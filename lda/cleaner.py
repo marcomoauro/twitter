@@ -1,6 +1,6 @@
 import emoji
 import re
-import numpy as np
+
 
 def clean_emoji(text):
     emoji_list = [c for c in text if c in emoji.UNICODE_EMOJI]
