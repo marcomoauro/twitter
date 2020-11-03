@@ -6,8 +6,8 @@ def filter(response):
     for tweet in response.get('data', []):
         if is_reply(tweet):
             continue
-        if not contain_keywords(tweet):
-            continue
+        #if not contain_keywords(tweet):
+        #    continue
 
         filtered_data.append(tweet)
     response['data'] = filtered_data
