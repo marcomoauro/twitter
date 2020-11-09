@@ -5,8 +5,8 @@ import numpy as np
 import settings
 
 WIDTHS = {
-    'account': 20,
-    'hashtag': 50
+    'account': 30,
+    'hashtag_company': 50
 }
 
 

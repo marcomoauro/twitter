@@ -154,7 +154,7 @@ def start(num_topics, kind):
     print("Model Perplexity: ", best_lda_model.perplexity(data_vectorized))
 
 if __name__ == '__main__':
-    ## kinds =
+    # kinds =
     # 'all' for all tweets,
     # 'it' (all the company and tweet with ISIN IT)
     # 'authoritative' for the authoritative twitter account

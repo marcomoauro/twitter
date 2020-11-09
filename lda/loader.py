@@ -50,17 +50,21 @@ def source_file_as_dict():
     return mydict
 
 
-def load_data(kind):
+def load_data(kind, sources=None):
     data = []
     source_dict = source_file_as_dict()
     for type in TWEET_TYPES:
         for dir in os.listdir(f"/home/marco/Scrivania/tirocinio-unicredit/tweets-data/{type}/"):
             for filename in os.listdir(f"/home/marco/Scrivania/tirocinio-unicredit/tweets-data/{type}/{dir}/"):
+                if sources and filename.split('.')[0] not in sources:
+                    continue
                 if is_skipped_tweet_file(filename):
                     continue
                 if kind == 'it' and not is_italian_isin(filename, source_dict):
                     continue
                 if kind == 'authoritative' and not is_authoritative(filename):
+                    continue
+                if kind == 'not_authoritative' and is_authoritative(filename):
                     continue
 
                 file = open(f"/home/marco/Scrivania/tirocinio-unicredit/tweets-data/{type}/{dir}/" + filename)
