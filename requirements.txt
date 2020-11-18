@@ -10,6 +10,7 @@ cymem==2.0.3
 de-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-2.3.0/de_core_news_sm-2.3.0.tar.gz
 decorator==4.4.2
 emoji==0.6.0
+en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-2.3.1/en_core_web_lg-2.3.1.tar.gz
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.1/en_core_web_sm-2.3.1.tar.gz
 fr-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-2.3.0/fr_core_news_sm-2.3.0.tar.gz
 funcy==1.15
@@ -20,6 +21,7 @@ importlib-metadata==2.0.0
 iniconfig==1.1.1
 ipython==7.18.1
 ipython-genutils==0.2.0
+it-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/it_core_news_lg-2.3.0/it_core_news_lg-2.3.0.tar.gz
 it-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/it_core_news_sm-2.3.0/it_core_news_sm-2.3.0.tar.gz
 jedi==0.17.2
 Jinja2==2.11.2
@@ -29,6 +31,7 @@ langdetect==1.0.7
 MarkupSafe==1.1.1
 matplotlib==3.3.2
 murmurhash==1.0.2
+names-dataset==1.9.1
 nltk==3.5
 numexpr==2.7.1
 numpy==1.19.2
@@ -71,6 +74,7 @@ toml==0.10.1
 tqdm==4.50.2
 traitlets==5.0.5
 urllib3==1.25.10
+vaderSentiment==3.3.2
 wasabi==0.8.0
 wcwidth==0.2.5
 wordcloud==1.8.0

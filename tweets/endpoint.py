@@ -3,6 +3,7 @@ import requests
 from time import sleep
 import datetime
 import settings
+import random
 
 LOG_HTTP_CALL = False
 
@@ -41,7 +42,7 @@ def oldest_timestamp():
 
 def response(query, next_token=None):
     api_url = url(query, next_token)
-    headers = {"Authorization": f"Bearer {settings.BEARER_TOKEN}"}
+    headers = {"Authorization": f"Bearer {random.choice(settings.BEARER_TOKENS)}"}
     response = requests.get(api_url, headers=headers)
     if response.status_code == 429:
         reset_time = datetime.datetime.fromtimestamp(int(response.headers['x-rate-limit-reset'])) + datetime.timedelta(seconds=30)

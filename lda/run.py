@@ -26,8 +26,8 @@ def start(num_topics, kind):
     cleaner.clean(df)
 
     nlps = {
-        'it': spacy.load('it'),
-        'en': spacy.load('en'),
+        'it': spacy.load('it_core_news_lg'),
+        'en': spacy.load('en_core_web_lg'),
         'fr': spacy.load('fr'),
         'de': spacy.load('de')
     }

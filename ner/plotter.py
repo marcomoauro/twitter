@@ -26,7 +26,7 @@ def calculate_data(kind, ents):
         return xs, ys
 
 
-def plot(ents, kind, date, name):
+def plot(ents, kind, date, name, info_type):
     xs, ys = calculate_data(kind, ents)
 
     x = np.arange(len(xs))  # the label locations
@@ -35,9 +35,6 @@ def plot(ents, kind, date, name):
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(111)
     rects1 = ax.bar(x, ys, width)
-
-    #for index, rect in enumerate(rects1):
-        #rect.set_color(get_color(index, kind))
 
     ax.set_title(f"{name} - {kind.capitalize()}")
     ax.set_xticks(x)
@@ -48,25 +45,14 @@ def plot(ents, kind, date, name):
     fig1 = plt.gcf()
     plt.grid()
     plt.show()
-    fig1.savefig(filepath(kind, date, name), dpi=200)
+    fig1.savefig(filepath(kind, date, name, info_type), dpi=200)
 
 
-def filepath(kind, date, name):
-    directory_path = f"/home/marco/Scrivania/tirocinio-unicredit/ner/plots/{date}/{name}"
+def filepath(kind, date, name, info_type):
+    directory_path = f"/home/marco/Scrivania/tirocinio-unicredit/ner/plots/{date}/{info_type}/{name}"
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
     return f"{directory_path}/{kind}.png"
-
-
-def get_color(index, kind):
-    if kind == 'summary':
-        return 'blue'
-    if index in [0, 1, 2]:
-        return 'green'
-    if index in [3, 4, 5]:
-        return 'red'
-    if index in [6, 7, 8]:
-        return 'yellow'
 
 
 def autolabel(ax, rects):
