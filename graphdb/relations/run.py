@@ -7,8 +7,9 @@ from spacy_cld import LanguageDetector
 
 def temp_relations(file, nlp_detect, nlps):
     file_type = temp_relations_file_type(file)
-    label_dict = labeler.create_label_dict(file, nlp_detect, nlps, file_type)
+    label_dict, discarded_labels = labeler.create_label_dict(file, nlp_detect, nlps, file_type)
     temp_storer.store(file_type, label_dict)
+    temp_storer.store_discarded_labels(file_type, discarded_labels)
 
 
 def temp_relations_file_type(file):
@@ -30,8 +31,8 @@ def oldest_timestamp():
 
 def nodes_files():
     base_path = '/home/marco/Scrivania/tirocinio-unicredit/graphdb/nodes/'
-    #return [base_path + oldest_timestamp() + '/tweet_nodes.csv']#, base_path + 'com_stampa_nodes.csv']
-    return [base_path + 'com_stampa_nodes.csv']#,base_path + oldest_timestamp() + '/tweet_nodes.csv']
+    return [base_path + oldest_timestamp() + '/tweet_nodes.csv']#, base_path + 'com_stampa_nodes.csv']
+    #return [base_path + 'com_stampa_nodes.csv']#,base_path + oldest_timestamp() + '/tweet_nodes.csv']
 
 
 def relations_files():

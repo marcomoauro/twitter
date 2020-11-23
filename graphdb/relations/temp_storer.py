@@ -40,3 +40,27 @@ def store(file_type, label_dict):
                         'occurrences': parse_occurrences(occ)
                     }
                 )
+
+
+def store_discarded_labels(file_type, discarded_labels):
+    base_path = '/home/marco/Scrivania/tirocinio-unicredit/graphdb/relations/'
+    if file_type == 'tweet':
+        today = datetime.datetime.now().strftime("%Y-%m-%d")
+        create_directory(today)
+        temp_relation_discarded_file_path = base_path + today + '/temp_tweet_relations_discarded.csv'
+    else:
+        temp_relation_discarded_file_path = base_path + '/temp_com_stampa_relations_discarded.csv'
+
+    print(f"create {file_type} temp relations discarded file")
+    with open(temp_relation_discarded_file_path, mode='w') as temp_relations_discarded:
+        fieldnames = ['label_type', 'label_value', 'reason']
+        writer = csv.DictWriter(temp_relations_discarded, fieldnames=fieldnames, delimiter='\t')
+        writer.writeheader()
+        for dl in discarded_labels:
+            writer.writerow(
+                {
+                    'label_type': dl[0],
+                    'label_value': dl[1],
+                    'reason': dl[2]
+                }
+            )

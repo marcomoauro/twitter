@@ -19,6 +19,7 @@ def create_label_dict(file, nlp_detect, nlps, file_type):
         'ORG': {},
         'GPE': {}
     }
+    discarded_labels = []
 
     df = pd.read_csv(file, sep='\t')
     print('create label dict')
@@ -38,26 +39,37 @@ def create_label_dict(file, nlp_detect, nlps, file_type):
 
             stopword_count = count_stopwords(ent_text)
             if not contain_at_least_one_alphabet_character(ent_text):
+                discarded_labels.append([ent.label_, ent.text, 'no_alphabet_characters'])
                 continue
 
             if is_bad_text(ent_text):
+                discarded_labels.append([ent.label_, ent.text, 'bad_text'])
                 continue
 
             # check for each label type
             if ent.label_ == 'PERSON':
-                if not(common_name_or_surname(name_dataset, ent_text)) or stopword_count >= 1:
+                if not(common_name_or_surname(name_dataset, ent_text)):
+                    discarded_labels.append([ent.label_, ent.text, 'uncommon_name_or_surname'])
+                    continue
+
+                if stopword_count >= 1:
+                    discarded_labels.append([ent.label_, ent.text, 'stopword_count >= 1'])
                     continue
 
             if ent.label_ == 'ORG':
-                if stopword_count >= STOPWORD_THRESHOLD[file_type]['ORG']:
+                threshold = STOPWORD_THRESHOLD[file_type]['ORG']
+                if stopword_count >= threshold:
+                    discarded_labels.append([ent.label_, ent.text, f"stopword_count >= {threshold}"])
                     continue
 
             if ent.label_ == 'GPE':
-                if stopword_count >= STOPWORD_THRESHOLD[file_type]['GPE']:
+                threshold = STOPWORD_THRESHOLD[file_type]['GPE']
+                if stopword_count >= threshold:
+                    discarded_labels.append([ent.label_, ent.text, f"stopword_count >= {threshold}"])
                     continue
 
             label_dict[ent.label_].setdefault(ent_text, []).append((row['id'], row['date']))
-    return label_dict
+    return label_dict, discarded_labels
 
 
 def count_stopwords(text):

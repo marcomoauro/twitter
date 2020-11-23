@@ -5,7 +5,8 @@ from sentiment_analysis.run import analyze
 
 
 def clean_text(text):
-    return text.replace("\n", ' ').replace("\t", ' ').replace('/', ' ')
+    text_without_punct = text.replace("\n", ' ').replace("\t", ' ').replace('/', ' ').replace('\uf0b7', ' ').replace('\xa0', ' ').replace('“', ' ').strip()
+    return ' '.join(list(filter(None, text_without_punct.split(' '))))
 
 
 def clean_date(row_date):
