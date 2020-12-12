@@ -4,7 +4,6 @@ import settings
 import datetime
 
 
-
 def save_timestamp():
     with open(settings.TIMESTAMP_FILE, 'w') as file:
         file.write(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))

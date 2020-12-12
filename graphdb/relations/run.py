@@ -37,8 +37,8 @@ def nodes_files():
 
 def relations_files():
     base_path = '/home/marco/Scrivania/tirocinio-unicredit/graphdb/relations/'
-    #return [base_path + oldest_timestamp() + '/tweet_nodes.csv', base_path + 'com_stampa_nodes.csv']
-    return [base_path + '2020-11-14' + '/temp_tweet_relations.csv', base_path + 'temp_com_stampa_relations.csv']
+    return [base_path + oldest_timestamp() + '/temp_tweet_relations.csv']#, base_path + 'temp_com_stampa_relations.csv']
+    #return [base_path + 'temp_com_stampa_relations.csv']#, base_path + oldest_timestamp() + '/temp_tweet_relations.csv']
 
 
 def init_nlp():
@@ -54,7 +54,7 @@ def init_nlp():
 
 if __name__ == '__main__':
     # =======================
-    action = 'build_temp_relation'  # [build_temp_relation, build_relation]
+    action = 'build_relation'  # [build_temp_relation, build_relation]
     # =======================
 
     if action == 'build_temp_relation':
