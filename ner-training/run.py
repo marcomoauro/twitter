@@ -58,14 +58,10 @@ def main(model=None, output_dir=None, n_iter=100):
         # training a new model
         if model is None:
             nlp.begin_training()
-        c = 0
         for itn in range(n_iter):
             if skip == True:
                 break
-            c += 1
-            print(c)
-            if c == 10:
-                nlp.to_disk(output_dir)
+
             random.shuffle(TRAIN_DATA)
             losses = {}
             # batch up the examples using spaCy's minibatch
