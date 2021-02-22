@@ -47,7 +47,7 @@ lib64/
 parts/
 sdist/
 var/
-tmp/
+misc_scripts/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -94,4 +94,4 @@ db.sqlite3
 .vscode
 logs/
 settings.py
-tmp/
+misc_scripts/

@@ -37,9 +37,11 @@ jedi==0.17.2
 Jinja2==2.11.2
 joblib==0.17.0
 kiwisolver==1.2.0
+langcodes==3.0.0
 langdetect==1.0.7
 MarkupSafe==1.1.1
 matplotlib==3.3.2
+msgpack==1.0.2
 murmurhash==1.0.2
 names-dataset==1.9.1
 nltk==3.5
@@ -90,5 +92,6 @@ vaderSentiment==3.3.2
 wasabi==0.8.0
 wcwidth==0.2.5
 wordcloud==1.8.0
+wordfreq==2.3.2
 xlrd==1.2.0
 zipp==3.3.1

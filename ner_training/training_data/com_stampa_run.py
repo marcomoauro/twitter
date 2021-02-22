@@ -8,8 +8,8 @@ import settings
 import json
 from itertools import permutations
 
-LANGUAGE = 'it'
-KEY_VALUE = 'personeChiave'
+LANGUAGE = 'en'
+KEY_VALUE = 'keyPeople'
 ENTITY_LABEL = 'KEY_PEOPLE'
 
 

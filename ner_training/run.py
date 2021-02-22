@@ -15,7 +15,7 @@ TRAIN_DATA1 = [
     ("I like London and Berlin.", {"entities": [(7, 13, "LOC"), (18, 24, "LOC")]}),
 ]
 
-TRAIN_DATA = json.load(open('/home/marco/Scrivania/tirocinio-unicredit/news/training-data/en/subsid/train.json'))
+TRAIN_DATA = json.load(open('/home/marco/Scrivania/tirocinio-unicredit/news/all/training_data/en-keypeople/subset/cli/train/14.json'))
 
 skip = False
 @plac.annotations(
@@ -75,7 +75,9 @@ def main(model=None, output_dir=None, n_iter=100):
                     losses=losses,
                 )
             print("Losses", losses)
-            nlp.to_disk(output_dir)
+            directory = Path(output_dir + f"/model_{itn}")
+            directory.mkdir()
+            nlp.to_disk(output_dir + f"/model_{itn}")
 
     # test the trained model
     for text, _ in TRAIN_DATA:
@@ -102,7 +104,7 @@ def main(model=None, output_dir=None, n_iter=100):
 
 if __name__ == "__main__":
     #plac.call(main)
-    main(output_dir='/home/marco/Scrivania/model-spacy-train-coded-en-subsid', model='/home/marco/Scrivania/model-spacy-train-coded-en-subsid')
+    main(output_dir='/home/marco/Scrivania/tirocinio-unicredit/news/all/subset_model')#, model='en_core_web_lg')
 
     # Expected output:
     # Entities [('Shaka Khan', 'PERSON')]

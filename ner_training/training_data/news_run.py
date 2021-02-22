@@ -8,15 +8,17 @@ import settings
 import json
 from itertools import permutations
 import os
+from spacy_format.emerging_to_spacy_format import remove_overlapped
+from spacy_format.emerging_to_spacy_format import remove_duplicates
 
 LANGUAGE = 'en'  # it, en
-KEY_VALUE = 'subsid'
+KEY_VALUE = 'keyPeople'
 ENTITY_LABEL = 'SUBSID'  # KEY_PEOPLE, SUBSID, SECTOR, PRODUCT, HEADQUARTER
 
 
 def fill_labels(language, key_value):
     it_infobox_df = pd.read_csv('/home/marco/Scrivania/tirocinio-unicredit/ner-trained/itwiki-infobox-properties-final.tsv', sep='\t')
-    en_infobox_df = pd.read_csv('/home/marco/Scrivania/tirocinio-unicredit/ner-trained/enwiki-infobox-properties-final.tsv', sep='\t')
+    en_infobox_df = pd.read_csv('/home/marco/Scaricati/en-companies-infobox-properties-final.tsv', sep='\t')
     if language == 'it' and key_value == 'personeChiave':
         return persone_chiave.filler_it(it_infobox_df, key_value)
     if language == 'en' and key_value == 'keyPeople':
@@ -33,11 +35,33 @@ def fill_labels(language, key_value):
         return prodotti.filler_it(it_infobox_df, key_value)
     if language == 'en' and key_value == 'products':
         return prodotti.filler_en(en_infobox_df, key_value)
-    if language == 'it' and key_value == 'sede':
-        return sede.filler_it(it_infobox_df, key_value)
-    if language == 'en' and ENTITY_LABEL == 'HEADQUARTER':
-        return sede.filler_en(en_infobox_df)
-
+    # if language == 'it' and key_value == 'sede':
+    #    return sede.filler_it(it_infobox_df, key_value)
+    # if language == 'en' and ENTITY_LABEL == 'HEADQUARTER':
+    #    return sede.filler_en(en_infobox_df)
+    if language == 'en' and key_value == 'all':
+        persone_chiave_dict = persone_chiave.filler_en(en_infobox_df, 'keyPeople')
+        prodotti_dict = prodotti.filler_en(en_infobox_df, 'products')
+        filiali_dict = filiali.filler_en(en_infobox_df, 'subsid')
+        settore_dict = settore.filler_en(en_infobox_df, 'industry')
+        all_dict = {}
+        for agency in sorted(list(set(list(persone_chiave_dict.keys()) + list(prodotti_dict.keys()) + list(filiali_dict.keys()) + list(settore_dict.keys())))):
+            agency_dict = {}
+            pc = persone_chiave_dict.get(agency)
+            if pc:
+                agency_dict['KEY_PEOPLE'] = pc
+            p = prodotti_dict.get(agency)
+            if p:
+                agency_dict['PRODUCT'] = p
+            f = filiali_dict.get(agency)
+            if f:
+                agency_dict['SUBSID'] = f
+            s = settore_dict.get(agency)
+            if s:
+                agency_dict['SECTOR'] = s
+            if agency_dict != {}:
+                all_dict[agency] = agency_dict
+        return all_dict
 
 def get_isin_to_company():
     d = {}
@@ -63,7 +87,7 @@ def permutation_labels(label):
     return perms_labels
 
 
-def get_positions(labels, text_parsed):
+def get_positions(labels, text_parsed, entity_value):
     positions = []
     label_length = len(labels[0])
     for label in labels:
@@ -73,13 +97,13 @@ def get_positions(labels, text_parsed):
             if index == -1:
                 break
             if text_parsed[index - 1] == ' ' and text_parsed[index + label_length] == ' ':
-                positions.append((index, index + label_length, ENTITY_LABEL))
+                positions.append((index, index + label_length, entity_value))
             index += label_length
     return positions
 
 
-def get_labels_perms(label_parsed):
-    if ENTITY_LABEL != 'KEY_PEOPLE':
+def get_labels_perms(label_parsed, entity_value):
+    if entity_value != 'KEY_PEOPLE':
         return [label_parsed]
     else:
        return permutation_labels(label_parsed)
@@ -107,14 +131,21 @@ if __name__ == '__main__':
             if company not in companies_infobox:
                 continue
 
-            labels = list(set(labels_by_company[company]))
-            for label in labels:
-                label_parsed = format_text(label)
-                text_parsed = format_text(row['text'])
-                labels_perms = get_labels_perms(label_parsed)
+            text_parsed = format_text(row['text'])
+            dict_company = labels_by_company[company]
+            all_positions = []
+            for entity_value in dict_company.keys():
+                labels = dict_company[entity_value]
+                for label in labels:
+                    label_parsed = format_text(label)
+                    labels_perms = get_labels_perms(label_parsed, entity_value)
 
-                positions = get_positions(labels_perms, text_parsed)
-                if len(positions) > 0:
-                    training_data.append((row['text'] + '.', {'entities': positions}))
+                    positions = get_positions(labels_perms, text_parsed, entity_value)
+                    if len(positions) > 0:
+                        all_positions += positions
+            if len(all_positions) > 0:
+                all_positions = remove_duplicates(all_positions)
+                all_positions = remove_overlapped(all_positions)
+                training_data.append((row['text'] + '.', {'entities': all_positions}))
     with open(f"/home/marco/Scrivania/tirocinio-unicredit/news/training-data/{LANGUAGE.lower()}_{KEY_VALUE.lower()}_training_data.json", 'w') as outfile:
         json.dump(training_data, outfile)
